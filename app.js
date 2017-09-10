@@ -25,7 +25,17 @@ d3.select('svg')
 
 var yScale = d3.scaleLinear();
 yScale.range([HEIGHT, 0]);
-yScale.domain([0, 10]);
+// yMin = d3.min(runs, function(datum, index){
+//     return datum.distance;
+// })
+// yMax = d3.max(runs, function(datum, index){
+//     return datum.distance;
+// })
+// yScale.domain([yMin, yMax]);
+yDomain = d3.extent(runs, function(datum, index){
+    return datum.distance;
+})
+yScale.domain(yDomain);
 
 d3.selectAll('circle').data(runs)
     .attr('cy', function(datum, index){
