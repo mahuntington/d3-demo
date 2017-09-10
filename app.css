@@ -4,6 +4,11 @@ body {
 circle {
     r: 5;
     fill: black;
+    transition: r 0.5s linear, fill 0.5s linear;
+}
+circle:hover {
+    r:10;
+    fill: blue;
 }
  svg {
      overflow: visible;

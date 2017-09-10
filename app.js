@@ -24,16 +24,23 @@ d3.select('svg')
     .style('height', HEIGHT);
 
 var xScale = d3.scaleTime();
+var parseTime = d3.timeParse("%B%e, %Y at%-I:%M%p");
+xScale.range([0,WIDTH]);
+xDomain = d3.extent(runs, function(datum, index){
+    return parseTime(datum.date);
+});
+xScale.domain(xDomain);
+
 var yScale = d3.scaleLinear();
+yScale.range([HEIGHT, 0]);
+yDomain = d3.extent(runs, function(datum, index){
+    return datum.distance;
+})
+yScale.domain(yDomain);
 var render = function(){
 
-    yScale.range([HEIGHT, 0]);
-    yDomain = d3.extent(runs, function(datum, index){
-        return datum.distance;
-    })
-    yScale.domain(yDomain);
-
-    d3.select('svg').selectAll('circle')
+    d3.select('#points').html('');
+    d3.select('#points').selectAll('circle')
         .data(runs)
         .enter()
         .append('circle');
@@ -43,18 +50,18 @@ var render = function(){
             return yScale(datum.distance);
         });
 
-    var parseTime = d3.timeParse("%B%e, %Y at%-I:%M%p");
-    xScale.range([0,WIDTH]);
-    xDomain = d3.extent(runs, function(datum, index){
-        return parseTime(datum.date);
-    });
-    xScale.domain(xDomain);
-
     d3.selectAll('circle')
         .attr('cx', function(datum, index){
             return xScale(parseTime(datum.date));
         });
-
+    d3.selectAll('circle').on('click', function(datum, index){
+        d3.event.stopPropagation();
+        runs = runs.filter(function(run, index){
+            return run.id != datum.id;
+        });
+        render();
+        createTable();
+    });
 }
 render();
 
@@ -90,7 +97,7 @@ d3.select('svg').on('click', function(){
     var distance = yScale.invert(y);
 
     var newRun = {
-        id: runs[runs.length-1].id+1,
+        id: ( runs.length > 0 ) ? runs[runs.length-1].id+1 : 1,
         date: formatTime(date),
         distance: distance
     }
