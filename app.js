@@ -4,17 +4,17 @@ var HEIGHT = 600;
 var runs = [
     {
         id: 1,
-        date: 'October 1, 2017',
+        date: 'October 1, 2017 at 4:00pm',
         distance: 5.2
     },
     {
         id: 2,
-        date: 'October 2, 2017',
+        date: 'October 2, 2017 at 5:00pm',
         distance: 6.4
     },
     {
         id: 3,
-        date: 'October 3, 2017',
+        date: 'October 3, 2017 at 6:00pm',
         distance: 8.7
     }
 ]
@@ -43,7 +43,7 @@ var render = function(){
             return yScale(datum.distance);
         });
 
-    var parseTime = d3.timeParse("%B%e, %Y");
+    var parseTime = d3.timeParse("%B%e, %Y at%-I:%M%p");
     xScale.range([0,WIDTH]);
     xDomain = d3.extent(runs, function(datum, index){
         return parseTime(datum.date);
@@ -81,7 +81,7 @@ var createTable = function(){
 
 createTable();
 
-var formatTime = d3.timeFormat("%B%e, %Y");
+var formatTime = d3.timeFormat("%B%e, %Y at%-I:%M%p");
 d3.select('svg').on('click', function(){
     var x = d3.event.offsetX;
     var y = d3.event.offsetY;
