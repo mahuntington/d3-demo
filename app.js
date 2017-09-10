@@ -22,3 +22,10 @@ var runs = [
 d3.select('svg')
     .style('width', WIDTH)
     .style('height', HEIGHT);
+
+var yScale = d3.scaleLinear();
+yScale.range([HEIGHT, 0]);
+yScale.domain([0, 10]);
+
+console.log(yScale(5)); //visual point
+console.log(yScale.invert(450)); //visual point
