@@ -52,3 +52,9 @@ d3.selectAll('circle')
     .attr('cx', function(datum, index){
         return xScale(parseTime(datum.date));
     });
+
+var bottomAxis = d3.axisBottom(xScale);
+d3.select('svg')
+	.append('g')
+	.call(bottomAxis)
+    .attr('transform', 'translate(0,'+HEIGHT+')');
