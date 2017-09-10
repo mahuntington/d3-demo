@@ -23,9 +23,10 @@ d3.select('svg')
     .style('width', WIDTH)
     .style('height', HEIGHT);
 
+var xScale = d3.scaleTime();
+var yScale = d3.scaleLinear();
 var render = function(){
 
-    var yScale = d3.scaleLinear();
     yScale.range([HEIGHT, 0]);
     yDomain = d3.extent(runs, function(datum, index){
         return datum.distance;
@@ -43,7 +44,6 @@ var render = function(){
         });
 
     var parseTime = d3.timeParse("%B%e, %Y");
-    var xScale = d3.scaleTime();
     xScale.range([0,WIDTH]);
     xDomain = d3.extent(runs, function(datum, index){
         return parseTime(datum.date);
@@ -54,7 +54,7 @@ var render = function(){
         .attr('cx', function(datum, index){
             return xScale(parseTime(datum.date));
         });
-        
+
 }
 render();
 
