@@ -27,5 +27,7 @@ var yScale = d3.scaleLinear();
 yScale.range([HEIGHT, 0]);
 yScale.domain([0, 10]);
 
-console.log(yScale(5)); //visual point
-console.log(yScale.invert(450)); //visual point
+d3.selectAll('circle').data(runs)
+    .attr('cy', function(datum, index){
+        return yScale(datum.distance);
+    });
