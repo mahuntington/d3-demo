@@ -96,4 +96,5 @@ d3.select('svg').on('click', function(){
     }
     runs.push(newRun);
     createTable();
+    render();
 });
