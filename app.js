@@ -30,7 +30,12 @@ yDomain = d3.extent(runs, function(datum, index){
 })
 yScale.domain(yDomain);
 
-d3.selectAll('circle').data(runs)
+d3.select('svg').selectAll('circle')
+    .data(runs)
+    .enter()
+    .append('circle');
+
+d3.selectAll('circle')
     .attr('cy', function(datum, index){
         return yScale(datum.distance);
     });
