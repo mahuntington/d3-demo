@@ -36,7 +36,7 @@ var xScale = d3.scaleTime();
 xScale.range([0,WIDTH]);
 xScale.domain([new Date('2017-10-1'), new Date('2017-10-31')]);
 
-var parseTime = d3.timeParse("%B%e, %Y");
-console.log(parseTime('October 2, 2017'));
-var formatTime = d3.timeFormat("%B%e, %Y");
-console.log(formatTime(new Date('2017-10-1')));
+d3.selectAll('circle')
+    .attr('cx', function(datum, index){
+        return xScale(parseTime(datum.date));
+    });
