@@ -58,3 +58,8 @@ d3.select('svg')
 	.append('g')
 	.call(bottomAxis)
     .attr('transform', 'translate(0,'+HEIGHT+')');
+
+var leftAxis = d3.axisLeft(yScale);
+d3.select('svg')
+	.append('g')
+	.call(leftAxis);
