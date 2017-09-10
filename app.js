@@ -31,3 +31,10 @@ d3.selectAll('circle').data(runs)
     .attr('cy', function(datum, index){
         return yScale(datum.distance);
     });
+
+var xScale = d3.scaleTime();
+xScale.range([0,WIDTH]);
+xScale.domain([new Date('2017-10-1'), new Date('2017-10-31')]);
+
+console.log(xScale.domain());
+console.log(xScale.range());
