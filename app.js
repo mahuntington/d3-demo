@@ -25,13 +25,6 @@ d3.select('svg')
 
 var yScale = d3.scaleLinear();
 yScale.range([HEIGHT, 0]);
-// yMin = d3.min(runs, function(datum, index){
-//     return datum.distance;
-// })
-// yMax = d3.max(runs, function(datum, index){
-//     return datum.distance;
-// })
-// yScale.domain([yMin, yMax]);
 yDomain = d3.extent(runs, function(datum, index){
     return datum.distance;
 })
@@ -42,11 +35,14 @@ d3.selectAll('circle').data(runs)
         return yScale(datum.distance);
     });
 
+var parseTime = d3.timeParse("%B%e, %Y");
 var xScale = d3.scaleTime();
 xScale.range([0,WIDTH]);
-xScale.domain([new Date('2017-10-1'), new Date('2017-10-31')]);
+xDomain = d3.extent(runs, function(datum, index){
+    return parseTime(datum.date);
+});
+xScale.domain(xDomain);
 
-var parseTime = d3.timeParse("%B%e, %Y");
 d3.selectAll('circle')
     .attr('cx', function(datum, index){
         return xScale(parseTime(datum.date));
