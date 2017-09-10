@@ -65,6 +65,7 @@ d3.select('svg')
 	.call(leftAxis);
 
 var createTable = function(){
+    d3.select('tbody').html('');
     for (var i = 0; i < runs.length; i++) {
         var row = d3.select('tbody').append('tr');
         row.append('td').html(runs[i].id);
@@ -74,3 +75,20 @@ var createTable = function(){
 }
 
 createTable();
+
+var formatTime = d3.timeFormat("%B%e, %Y");
+d3.select('svg').on('click', function(){
+    var x = d3.event.offsetX;
+    var y = d3.event.offsetY;
+
+    var date = xScale.invert(x)
+    var distance = yScale.invert(y);
+
+    var newRun = {
+        id: runs[runs.length-1].id+1,
+        date: formatTime(date),
+        distance: distance
+    }
+    runs.push(newRun);
+    createTable();
+});
