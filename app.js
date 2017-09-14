@@ -63,6 +63,17 @@ var render = function(){
         createTable();
     });
 
+    var dragEnd = function(datum){
+        var x = d3.event.x;
+		var y = d3.event.y;
+
+		var date = xScale.invert(x);
+		var distance = yScale.invert(y);
+
+		datum.date = formatTime(date);
+		datum.distance = distance;
+        createTable();
+    }
     var drag = function(datum){
 		var x = d3.event.x;
 		var y = d3.event.y;
@@ -71,8 +82,8 @@ var render = function(){
 	}
     var dragBehavior = d3.drag()
         // .on('start', dragStart)
-        .on('drag', drag);
-        // .on('end', dragEnd);
+        .on('drag', drag)
+        .on('end', dragEnd);
     d3.selectAll('circle').call(dragBehavior);
 }
 render();
@@ -100,7 +111,7 @@ var createTable = function(){
 
 createTable();
 
-var formatTime = d3.timeFormat("%B%e, %Y at%-I:%M%p");
+var formatTime = d3.timeFormat("%B%e, %Y at %-I:%M%p");
 d3.select('svg').on('click', function(){
     var x = d3.event.offsetX;
     var y = d3.event.offsetY;
