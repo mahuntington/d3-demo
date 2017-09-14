@@ -1,6 +1,9 @@
 body {
     margin: 20px 40px;
 }
+#container {
+    overflow: hidden;
+}
 circle {
     r: 5;
     fill: black;
@@ -15,7 +18,8 @@ circle:active {
 }
  svg {
      overflow: visible;
-     margin-bottom: 50px;
+     margin-bottom: 20px;
+     margin-left: 30px;
  }
 
  table, th, td {
