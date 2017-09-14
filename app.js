@@ -115,8 +115,8 @@ createTable();
 
 var formatTime = d3.timeFormat("%B%e, %Y at %-I:%M%p");
 d3.select('svg').on('click', function(){
-    var x = d3.event.offsetX;
-    var y = d3.event.offsetY;
+    var x = lastTransform.invertX(d3.event.offsetX);
+    var y = lastTransform.invertY(d3.event.offsetY);
 
     var date = xScale.invert(x)
     var distance = yScale.invert(y);
@@ -131,7 +131,9 @@ d3.select('svg').on('click', function(){
     render();
 });
 
+var lastTransform = null;
 var zoomCallback = function(){
+    lastTransform = d3.event.transform;
 	d3.select('#points').attr("transform", d3.event.transform);
     d3.select('#x-axis').call(bottomAxis.scale(d3.event.transform.rescaleX(xScale)));
 	d3.select('#y-axis').call(leftAxis.scale(d3.event.transform.rescaleY(yScale)));
