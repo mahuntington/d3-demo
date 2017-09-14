@@ -39,21 +39,21 @@ yDomain = d3.extent(runs, function(datum, index){
 yScale.domain(yDomain);
 var render = function(){
 
-    d3.select('#points').html('');
-    d3.select('#points').selectAll('circle')
-        .data(runs)
-        .enter()
-        .append('circle');
+    var circles = d3.select('#points').selectAll('circle').data(runs, function(datum){ //when redrawing circles, make sure pre-existing circles match with their old data
+        return datum.id
+    });
 
-    d3.selectAll('circle')
+    circles.enter()
+        .append('circle')
         .attr('cy', function(datum, index){
             return yScale(datum.distance);
-        });
-
-    d3.selectAll('circle')
+        })
         .attr('cx', function(datum, index){
             return xScale(parseTime(datum.date));
         });
+
+    circles.exit().remove();
+
     d3.selectAll('circle').on('click', function(datum, index){
         d3.event.stopPropagation();
         runs = runs.filter(function(run, index){
