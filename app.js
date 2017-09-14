@@ -115,8 +115,13 @@ createTable();
 
 var formatTime = d3.timeFormat("%B%e, %Y at %-I:%M%p");
 d3.select('svg').on('click', function(){
-    var x = lastTransform.invertX(d3.event.offsetX);
-    var y = lastTransform.invertY(d3.event.offsetY);
+    var x = d3.event.offsetX;
+	var y = d3.event.offsetY;
+
+	if(lastTransform !== null){
+		x = lastTransform.invertX(d3.event.offsetX);
+		y = lastTransform.invertY(d3.event.offsetY);
+	}
 
     var date = xScale.invert(x)
     var distance = yScale.invert(y);
