@@ -10,6 +10,9 @@ circle:hover {
     r:10;
     fill: blue;
 }
+circle:active {
+    fill: red;
+}
  svg {
      overflow: visible;
      margin-bottom: 50px;
