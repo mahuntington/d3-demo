@@ -62,6 +62,18 @@ var render = function(){
         render();
         createTable();
     });
+
+    var drag = function(datum){
+		var x = d3.event.x;
+		var y = d3.event.y;
+		d3.select(this).attr('cx', x);
+		d3.select(this).attr('cy', y);
+	}
+    var dragBehavior = d3.drag()
+        // .on('start', dragStart)
+        .on('drag', drag);
+        // .on('end', dragEnd);
+    d3.selectAll('circle').call(dragBehavior);
 }
 render();
 
