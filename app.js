@@ -17,26 +17,8 @@ var runs = [
         date: 'October 3, 2017 at 6:00PM',
         distance: 8.7
     }
-]
+];
 
-d3.select('#container')
-    .style('width', WIDTH)
-    .style('height', HEIGHT);
-
-var xScale = d3.scaleTime();
-var parseTime = d3.timeParse("%B%e, %Y at %-I:%M%p");
-xScale.range([0,WIDTH]);
-xDomain = d3.extent(runs, function(datum, index){
-    return parseTime(datum.date);
-});
-xScale.domain(xDomain);
-
-var yScale = d3.scaleLinear();
-yScale.range([HEIGHT, 0]);
-yDomain = d3.extent(runs, function(datum, index){
-    return datum.distance;
-})
-yScale.domain(yDomain);
 var render = function(){
 
     var circles = d3.select('#points').selectAll('circle').data(runs, function(datum){ //when redrawing circles, make sure pre-existing circles match with their old data
@@ -86,6 +68,42 @@ var render = function(){
         .on('end', dragEnd);
     d3.selectAll('circle').call(dragBehavior);
 }
+
+var createTable = function(){
+    d3.select('tbody').html('');
+    for (var i = 0; i < runs.length; i++) {
+        var row = d3.select('tbody').append('tr');
+        row.append('td').html(runs[i].id);
+        row.append('td').html(runs[i].date);
+        row.append('td').html(runs[i].distance);
+    }
+}
+
+var zoomCallback = function(){
+    lastTransform = d3.event.transform;
+	d3.select('#points').attr("transform", d3.event.transform);
+    d3.select('#x-axis').call(bottomAxis.scale(d3.event.transform.rescaleX(xScale)));
+	d3.select('#y-axis').call(leftAxis.scale(d3.event.transform.rescaleY(yScale)));
+}
+
+d3.select('#container')
+    .style('width', WIDTH)
+    .style('height', HEIGHT);
+
+var xScale = d3.scaleTime();
+var parseTime = d3.timeParse("%B%e, %Y at %-I:%M%p");
+xScale.range([0,WIDTH]);
+xDomain = d3.extent(runs, function(datum, index){
+    return parseTime(datum.date);
+});
+xScale.domain(xDomain);
+
+var yScale = d3.scaleLinear();
+yScale.range([HEIGHT, 0]);
+yDomain = d3.extent(runs, function(datum, index){
+    return datum.distance;
+})
+yScale.domain(yDomain);
 render();
 
 var bottomAxis = d3.axisBottom(xScale);
@@ -100,16 +118,6 @@ d3.select('#container')
 	.append('g')
     .attr('id', 'y-axis')
 	.call(leftAxis);
-
-var createTable = function(){
-    d3.select('tbody').html('');
-    for (var i = 0; i < runs.length; i++) {
-        var row = d3.select('tbody').append('tr');
-        row.append('td').html(runs[i].id);
-        row.append('td').html(runs[i].date);
-        row.append('td').html(runs[i].distance);
-    }
-}
 
 createTable();
 
@@ -137,11 +145,5 @@ d3.select('#container').on('click', function(){
 });
 
 var lastTransform = null;
-var zoomCallback = function(){
-    lastTransform = d3.event.transform;
-	d3.select('#points').attr("transform", d3.event.transform);
-    d3.select('#x-axis').call(bottomAxis.scale(d3.event.transform.rescaleX(xScale)));
-	d3.select('#y-axis').call(leftAxis.scale(d3.event.transform.rescaleY(yScale)));
-}
 var zoom = d3.zoom().on('zoom', zoomCallback);
 d3.select('#container').call(zoom);
