@@ -1,23 +1,6 @@
 var WIDTH = 800;
 var HEIGHT = 600;
-
-var runs = [
-    {
-        id: 1,
-        date: 'October 1, 2017 at 4:00PM',
-        distance: 5.2
-    },
-    {
-        id: 2,
-        date: 'October 2, 2017 at 5:00PM',
-        distance: 7.0725
-    },
-    {
-        id: 3,
-        date: 'October 3, 2017 at 6:00PM',
-        distance: 8.7
-    }
-];
+var runs = null;
 
 var render = function(){
 
@@ -151,4 +134,7 @@ var formatTime = d3.timeFormat("%B%e, %Y at %-I:%M%p");
 var lastTransform = null;
 var zoom = d3.zoom().on('zoom', zoomCallback);
 
-init();
+d3.json('data.json', function(error, data){
+    runs = data;
+    init();
+});
