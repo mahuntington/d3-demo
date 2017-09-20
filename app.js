@@ -86,19 +86,25 @@ var zoomCallback = function(){
 	d3.select('#y-axis').call(leftAxis.scale(d3.event.transform.rescaleY(yScale)));
 }
 
+var xScale = d3.scaleTime();
+var parseTime = d3.timeParse("%B%e, %Y at %-I:%M%p");
+var yScale = d3.scaleLinear();
+var bottomAxis = d3.axisBottom(xScale);
+var leftAxis = d3.axisLeft(yScale);
+var formatTime = d3.timeFormat("%B%e, %Y at %-I:%M%p");
+var lastTransform = null;
+var zoom = d3.zoom().on('zoom', zoomCallback);
+
 d3.select('#container')
     .style('width', WIDTH)
     .style('height', HEIGHT);
 
-var xScale = d3.scaleTime();
-var parseTime = d3.timeParse("%B%e, %Y at %-I:%M%p");
 xScale.range([0,WIDTH]);
 xDomain = d3.extent(runs, function(datum, index){
     return parseTime(datum.date);
 });
 xScale.domain(xDomain);
 
-var yScale = d3.scaleLinear();
 yScale.range([HEIGHT, 0]);
 yDomain = d3.extent(runs, function(datum, index){
     return datum.distance;
@@ -106,14 +112,12 @@ yDomain = d3.extent(runs, function(datum, index){
 yScale.domain(yDomain);
 render();
 
-var bottomAxis = d3.axisBottom(xScale);
 d3.select('#container')
 	.append('g')
     .attr('id', 'x-axis')
 	.call(bottomAxis)
     .attr('transform', 'translate(0,'+HEIGHT+')');
 
-var leftAxis = d3.axisLeft(yScale);
 d3.select('#container')
 	.append('g')
     .attr('id', 'y-axis')
@@ -121,7 +125,6 @@ d3.select('#container')
 
 createTable();
 
-var formatTime = d3.timeFormat("%B%e, %Y at %-I:%M%p");
 d3.select('#container').on('click', function(){
     var x = d3.event.offsetX;
 	var y = d3.event.offsetY;
@@ -144,6 +147,4 @@ d3.select('#container').on('click', function(){
     render();
 });
 
-var lastTransform = null;
-var zoom = d3.zoom().on('zoom', zoomCallback);
 d3.select('#container').call(zoom);
