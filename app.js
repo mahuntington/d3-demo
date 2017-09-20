@@ -95,56 +95,60 @@ var formatTime = d3.timeFormat("%B%e, %Y at %-I:%M%p");
 var lastTransform = null;
 var zoom = d3.zoom().on('zoom', zoomCallback);
 
-d3.select('#container')
-    .style('width', WIDTH)
-    .style('height', HEIGHT);
+var init = function(){
+    d3.select('#container')
+        .style('width', WIDTH)
+        .style('height', HEIGHT);
 
-xScale.range([0,WIDTH]);
-xDomain = d3.extent(runs, function(datum, index){
-    return parseTime(datum.date);
-});
-xScale.domain(xDomain);
+    xScale.range([0,WIDTH]);
+    xDomain = d3.extent(runs, function(datum, index){
+        return parseTime(datum.date);
+    });
+    xScale.domain(xDomain);
 
-yScale.range([HEIGHT, 0]);
-yDomain = d3.extent(runs, function(datum, index){
-    return datum.distance;
-})
-yScale.domain(yDomain);
-render();
-
-d3.select('#container')
-	.append('g')
-    .attr('id', 'x-axis')
-	.call(bottomAxis)
-    .attr('transform', 'translate(0,'+HEIGHT+')');
-
-d3.select('#container')
-	.append('g')
-    .attr('id', 'y-axis')
-	.call(leftAxis);
-
-createTable();
-
-d3.select('#container').on('click', function(){
-    var x = d3.event.offsetX;
-	var y = d3.event.offsetY;
-
-	if(lastTransform !== null){
-		x = lastTransform.invertX(d3.event.offsetX);
-		y = lastTransform.invertY(d3.event.offsetY);
-	}
-
-    var date = xScale.invert(x)
-    var distance = yScale.invert(y);
-
-    var newRun = {
-        id: ( runs.length > 0 ) ? runs[runs.length-1].id+1 : 1,
-        date: formatTime(date),
-        distance: distance
-    }
-    runs.push(newRun);
-    createTable();
+    yScale.range([HEIGHT, 0]);
+    yDomain = d3.extent(runs, function(datum, index){
+        return datum.distance;
+    })
+    yScale.domain(yDomain);
     render();
-});
 
-d3.select('#container').call(zoom);
+    d3.select('#container')
+    	.append('g')
+        .attr('id', 'x-axis')
+    	.call(bottomAxis)
+        .attr('transform', 'translate(0,'+HEIGHT+')');
+
+    d3.select('#container')
+    	.append('g')
+        .attr('id', 'y-axis')
+    	.call(leftAxis);
+
+    createTable();
+
+    d3.select('#container').on('click', function(){
+        var x = d3.event.offsetX;
+    	var y = d3.event.offsetY;
+
+    	if(lastTransform !== null){
+    		x = lastTransform.invertX(d3.event.offsetX);
+    		y = lastTransform.invertY(d3.event.offsetY);
+    	}
+
+        var date = xScale.invert(x)
+        var distance = yScale.invert(y);
+
+        var newRun = {
+            id: ( runs.length > 0 ) ? runs[runs.length-1].id+1 : 1,
+            date: formatTime(date),
+            distance: distance
+        }
+        runs.push(newRun);
+        createTable();
+        render();
+    });
+
+    d3.select('#container').call(zoom);
+}
+
+init();
