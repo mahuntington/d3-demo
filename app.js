@@ -86,15 +86,6 @@ var zoomCallback = function(){
 	d3.select('#y-axis').call(leftAxis.scale(d3.event.transform.rescaleY(yScale)));
 }
 
-var xScale = d3.scaleTime();
-var parseTime = d3.timeParse("%B%e, %Y at %-I:%M%p");
-var yScale = d3.scaleLinear();
-var bottomAxis = d3.axisBottom(xScale);
-var leftAxis = d3.axisLeft(yScale);
-var formatTime = d3.timeFormat("%B%e, %Y at %-I:%M%p");
-var lastTransform = null;
-var zoom = d3.zoom().on('zoom', zoomCallback);
-
 var init = function(){
     d3.select('#container')
         .style('width', WIDTH)
@@ -150,5 +141,14 @@ var init = function(){
 
     d3.select('#container').call(zoom);
 }
+
+var xScale = d3.scaleTime();
+var parseTime = d3.timeParse("%B%e, %Y at %-I:%M%p");
+var yScale = d3.scaleLinear();
+var bottomAxis = d3.axisBottom(xScale);
+var leftAxis = d3.axisLeft(yScale);
+var formatTime = d3.timeFormat("%B%e, %Y at %-I:%M%p");
+var lastTransform = null;
+var zoom = d3.zoom().on('zoom', zoomCallback);
 
 init();
