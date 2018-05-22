@@ -134,7 +134,7 @@ var formatTime = d3.timeFormat("%B%e, %Y at %-I:%M%p");
 var lastTransform = null;
 var zoom = d3.zoom().on('zoom', zoomCallback);
 
-d3.json('data.json', function(error, data){
+d3.json('data.json').then(function(data){
     runs = data;
     init();
 });
